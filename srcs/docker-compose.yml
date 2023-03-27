@@ -1,0 +1,7 @@
+version: '3.5'
+
+services:
+  testnginx:
+    build: /home/ghanquer/Documents/Inception/srcs/requirements/nginx
+    image: nginx:inception
+    container_name: nginx
