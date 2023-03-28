@@ -1,3 +1,4 @@
 FROM	debian:buster
-COPY	./conf
-CMD		sudo apt install nginx & \
+#COPY	./conf/conf /etc/nginx/conf
+RUN		apt update && apt install -y nginx
+CMD	["/usr/sbin/nginx", "-g", "daemon off;"]

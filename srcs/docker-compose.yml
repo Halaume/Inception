@@ -1,7 +1,13 @@
 version: '3.5'
 
 services:
-  testnginx:
+  nginx:
     build: /home/ghanquer/Documents/Inception/srcs/requirements/nginx
     image: nginx:inception
     container_name: nginx
+    ports: 
+      - "8080:80"
+  mariadb:
+    build: /home/ghanquer/Documents/Inception/srcs/requirements/mariaDB
+    image: mariadb:incepetion
+    container_name: mariadb
