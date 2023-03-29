@@ -1,9 +1,9 @@
 #! /bin/bash
 
-sudo mariadb -u root -p
-
+mariadb -u root -p
+CREATE DATABASE wordpress
 CREATE USER 'Chef'@'localhost' IDENTIFIED BY 'Chef';
 CREATE USER 'User'@'localhost' IDENTIFIED BY 'User';
-GRANT ALL PRIVILEGES ON *.* TO 'Chef'@'localhost';
+GRANT ALL PRIVILEGES ON wordpress.* TO 'Chef'@'localhost';
 FLUSH PRIVILEGES;
 EXIT;

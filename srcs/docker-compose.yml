@@ -6,8 +6,23 @@ services:
     image: nginx:inception
     container_name: nginx
     ports: 
-      - "8080:80"
+      - "443:443"
+    restart: always
   mariadb:
     build: /home/ghanquer/Documents/Inception/srcs/requirements/mariaDB
     image: mariadb:incepetion
     container_name: mariadb
+    restart: always
+  wordpress:
+    depends_on:
+      - mariadb
+    build: /home/ghanquer/Documents/Inception/srcs/requirements/wordpress
+    image: wordpress:inception
+    container_name: wordpress
+    ports:
+      - "8081:9000"
+    restart: always
+      #network:
+      #  inception:
+    #volumes:
+

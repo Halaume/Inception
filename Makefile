@@ -5,10 +5,9 @@ clean:
 	(cd srcs/ ; sudo docker-compose down)
 
 fclean: clean
-	sudo docker rm $(sudo docker ps -aq)
-	sudo docker rmi $(sudo docker images -aq)
+	sudo sh ./.fclean.sh
 
-re: clean all
+re: fclean all
 
 coffee: all clean
 	@echo ""
