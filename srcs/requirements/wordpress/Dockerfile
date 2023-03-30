@@ -8,3 +8,5 @@ php7.4-xml php7.4-xmlrpc php7.4-curl php7.4-gd \
 php7.4-imagick php7.4-cli php7.4-dev php7.4-imap \
 php7.4-mbstring php7.4-opcache php7.4-redis \
 php7.4-soap php7.4-zip -y
+
+RUN sed 's/listen=\/run\/php\/php7.4-fpm.sock/listen=127.0.0.1:9000/' ; sed 's/listen=\/var\/run\/php\/php7.4-fpm.sock//'

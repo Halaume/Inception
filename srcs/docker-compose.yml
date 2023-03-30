@@ -8,11 +8,22 @@ services:
     ports: 
       - "443:443"
     restart: always
+
   mariadb:
     build: /home/ghanquer/Documents/Inception/srcs/requirements/mariaDB
     image: mariadb:incepetion
     container_name: mariadb
     restart: always
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - Awesome_network
+    environment:
+      MYSQL_ROOT_PASSWORD: Chef
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: Chef
+      MYSQL_PASSWORD: Chef
+
   wordpress:
     depends_on:
       - mariadb
@@ -22,7 +33,17 @@ services:
     ports:
       - "8081:9000"
     restart: always
-      #network:
-      #  inception:
-    #volumes:
+    networks:
+      - Awesome_network
+    volumes: ["./:/var/www/html"]
+    environment:
+      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
 
+networks:
+  Awesome_network:
+volumes:
+  database:
+
+#TODO PUT ENVIRONMENT INTO .env file
