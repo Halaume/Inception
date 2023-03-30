@@ -1,9 +1,10 @@
 #! /bin/bash
 
-#if [ ! -d "/var/lib/mysql/mysql.sock" ]
-#then
-touch /var/lib/mysql/mysql.sock
-#fi
+if [ ! -d "/var/lib/mysql/mysql.sock" ]
+then
+	cat <<EOF >/var/run/mysqld/mysqld.sock
+	EOF
+fi
 
 cat <<EOF >init.conf
 CREATE DATABASE IF NOT EXISTS wordpress
