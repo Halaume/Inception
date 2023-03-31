@@ -2,16 +2,22 @@ version: '3.5'
 
 services:
   nginx:
+    depends_on:
+      - wordpress
     build: /home/ghanquer/Documents/Inception/srcs/requirements/nginx
     image: nginx:inception
     container_name: nginx
+    networks:
+      - Awesome_network
+    volumes:
+      - wordpress-vol:/var/www/html/wordpress
     ports: 
       - "443:443"
     restart: always
 
   mariadb:
     build: /home/ghanquer/Documents/Inception/srcs/requirements/mariaDB
-    image: mariadb:incepetion
+    image: mariadb:inception
     container_name: mariadb
     restart: always
     volumes:
@@ -30,12 +36,11 @@ services:
     build: /home/ghanquer/Documents/Inception/srcs/requirements/wordpress
     image: wordpress:inception
     container_name: wordpress
-    ports:
-      - "8081:9000"
     restart: always
     networks:
       - Awesome_network
-    volumes: ["./:/var/www/html"]
+    volumes:
+      - wordpress-vol:/wordpress
     environment:
       WORDPRESS_DB_HOST: database:3306
       WORDPRESS_DB_USER: wordpress
@@ -45,5 +50,6 @@ networks:
   Awesome_network:
 volumes:
   database:
+  wordpress-vol:
 
 #TODO PUT ENVIRONMENT INTO .env file
