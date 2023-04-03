@@ -4,7 +4,7 @@ services:
   nginx:
     depends_on:
       - wordpress
-    build: /home/ghanquer/Documents/Inception/srcs/requirements/nginx
+    build: requirements/nginx
     image: nginx:inception
     container_name: nginx
     networks:
@@ -16,7 +16,7 @@ services:
     restart: always
 
   mariadb:
-    build: /home/ghanquer/Documents/Inception/srcs/requirements/mariaDB
+    build: requirements/mariaDB
     image: mariadb:inception
     container_name: mariadb
     restart: always
@@ -25,24 +25,24 @@ services:
     networks:
       - Awesome_network
     environment:
-      MYSQL_ROOT_PASSWORD: Chef
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: Chef
-      MYSQL_PASSWORD: Chef
+      MARIADB_ROOT_PASSWORD: Chef
+      MARIADB_DATABASE: wordpress
+      MARIADB_USER: Chef
+      MARIADB_PASSWORD: Chef
 
   wordpress:
     depends_on:
       - mariadb
-    build: /home/ghanquer/Documents/Inception/srcs/requirements/wordpress
+    build: requirements/wordpress
     image: wordpress:inception
     container_name: wordpress
     restart: always
     networks:
       - Awesome_network
     volumes:
-      - wordpress-vol:/wordpress
+      - wordpress-vol:/var/www/html/wordpress
     environment:
-      WORDPRESS_DB_HOST: database:3306
+      WORDPRESS_DB_HOST: mariadb:3306
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
 

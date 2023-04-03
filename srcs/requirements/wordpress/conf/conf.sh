@@ -5,15 +5,23 @@ then
 	echo "" > /run/php/php7.4-fpm.sock
 fi
 
-while ! mariadb -hmariadb -uChef -pChef "wordpress" &>/dev/null
-do
-    sleep 1
+until mysql -hmariadb --user="Chef" --password="Chef" "wordpress" 2> /dev/null; do
+	sleep 1
 done
 
-test -d /wordpress || mkdir /wordpress
-cd /wordpress; \
+test -d /var/www/html/wordpress || mkdir -p /var/www/html/wordpress
+
+if [ ! -f /var/www/html/wordpress/wp-config.php ]
+then
+
+cd /var/www/html/wordpress; \
 	wp core download --allow-root; \
-	wp config create --dbhost=mariadb --dbname=wordpress --dbuser=Chef --dbpass=Chef --allow-root; \
-	wp core install --url=ghanquer.42.fr --title=Wordpress --admin_user=Chef --admin_password=Chef --admin_email="i@i.com"  --skip-email --allow-root
+	wp config create --dbhost=mariadb --dbname=wordpress --dbuser=Chef --dbpass=Chef --allow-root; chmod 0755 wp-config.php; \
+	wp core install --url=ghanquer.42.fr --title="Wordpress" --admin_user=Chef --admin_password=Chef --admin_email="i@i.com"  --skip-email --allow-root
+fi
+
+chown -R www-data:www-data /var/www/html/wordpress
+
 #exec sleep infinity
+echo "Wordpress Done"
 exec /usr/sbin/php-fpm7.4 -F
