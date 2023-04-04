@@ -24,12 +24,7 @@ services:
       - database:/var/lib/mysql
     networks:
       - Awesome_network
-    environment:
-      MARIADB_ROOT_PASSWORD: Chef
-      MARIADB_DATABASE: wordpress
-      MARIADB_USER: Chef
-      MARIADB_PASSWORD: Chef
-      MARIADB_ROOT_MAIL: i@i.com
+    env_file: ./.env
 
   wordpress:
     depends_on:
@@ -42,15 +37,7 @@ services:
       - Awesome_network
     volumes:
       - wordpress-vol:/var/www/html/wordpress
-    environment:
-      WORDPRESS_DB_HOST: mariadb:3306
-      WORDPRESS_DB_USER: wordpress
-      WORDPRESS_DB_PASSWORD: wordpress
-      MARIADB_ROOT_MAIL: i@i.com
-      MARIADB_ROOT_PASSWORD: Chef
-      MARIADB_DATABASE: wordpress
-      MARIADB_USER: Chef
-      MARIADB_PASSWORD: Chef
+    env_file: ./.env
 
 networks:
   Awesome_network:
