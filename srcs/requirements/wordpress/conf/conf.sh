@@ -5,7 +5,7 @@ then
 	echo "" > /run/php/php7.4-fpm.sock
 fi
 
-until mysql -hmariadb --user="Chef" --password="Chef" "wordpress" 2> /dev/null; do
+until mysql -hmariadb --user="${MARIADB_USER}" --password="${MARIADB_PASSWORD}" "${MARIADB_DATABASE}" 2> /dev/null; do
 	sleep 1
 done
 
@@ -16,8 +16,8 @@ then
 
 cd /var/www/html/wordpress; \
 	wp core download --allow-root; \
-	wp config create --dbhost=mariadb --dbname=wordpress --dbuser=Chef --dbpass=Chef --allow-root; chmod 0755 wp-config.php; \
-	wp core install --url=ghanquer.42.fr --title="Wordpress" --admin_user=Chef --admin_password=Chef --admin_email="i@i.com"  --skip-email --allow-root
+	wp config create --dbhost=mariadb --dbname=${MARIADB_DATABASE} --dbuser=${MARIADB_USER} --dbpass=${MARIADB_PASSWORD} --allow-root; chmod 0755 wp-config.php; \
+	wp core install --url=ghanquer.42.fr --title="${MARIADB_DATABASE}" --admin_user=${MARIADB_USER} --admin_password=${MARIADB_PASSWORD} --admin_email="${MARIADB_ROOT_MAIL}"  --skip-email --allow-root
 fi
 
 chown -R www-data:www-data /var/www/html/wordpress
