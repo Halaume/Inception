@@ -43,6 +43,12 @@ networks:
   Awesome_network:
 volumes:
   database:
+    driver_opts:
+      type: none
+      o:  bind
+      device: "/home/ghanquer/data/db"
   wordpress-vol:
-
-#TODO PUT ENVIRONMENT INTO .env file
+    driver_opts:
+      type: none
+      o:  bind
+      device: "/home/ghanquer/data/wp"

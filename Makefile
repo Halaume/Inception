@@ -4,6 +4,9 @@ all:
 clean:
 	(cd srcs/ ; sudo docker-compose down)
 
+clean_data:
+	sudo rm -fr /home/ghanquer/data/db/* /home/ghanquer/data/wp/*
+
 fclean: clean
 	sudo sh ./.fclean.sh
 

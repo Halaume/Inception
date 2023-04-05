@@ -1,8 +1,9 @@
 #! /bin/bash
 
-if [ ! -d "/var/run/mysql/mysql.sock" ]
+if [ ! -f "/var/run/mysqld/mysql.sock" ]
 then
 	echo "" > /var/run/mysqld/mysqld.sock
+	chmod 0755 /var/run/mysqld/mysqld.sock
 fi
 
 cat <<EOF >init.conf
@@ -13,14 +14,14 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY '${MARIADB_ROOT_PASSWORD}';
 FLUSH PRIVILEGES;
 EOF
 
-service mysql start 2> /dev/null
+service mysql start
 
 while [ [ ! mysqladmin -uroot --password="" status &> /dev/null ] && [ ! mysqladmin -uroot --password="$MARIA_ROOT_PW" status &> /dev/null ] ] ; do sleep 1; done;
 sleep 1
 
 
-mysql --user=root --password="" < init.conf 2> /dev/null
+mysql --user=root --password="" < init.conf
 
-mysqladmin --user=root --password="${MARIADB_ROOT_PASSWORD}" shutdown 2> /dev/null
+mysqladmin --user=root --password="${MARIADB_ROOT_PASSWORD}" shutdown
 
 exec mysqld --bind-address=0.0.0.0
