@@ -1,0 +1,87 @@
+version: '3.5'
+
+services:
+  nginx:
+    depends_on:
+      - adminer
+      - wordpress
+    build: requirements/nginx
+    image: nginx:inception
+    container_name: nginx
+    networks:
+      - Awesome_network
+    volumes:
+      - wordpress-vol:/var/www/html/wordpress
+    ports: 
+      - "443:443"
+    restart: always
+    environment:
+      - BONUS=1
+
+  mariadb:
+    build: requirements/mariaDB
+    image: mariadb:inception
+    container_name: mariadb
+    restart: always
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - Awesome_network
+    env_file: ./.env
+
+  wordpress:
+    depends_on:
+      - mariadb
+    build: requirements/wordpress
+    image: wordpress:inception
+    container_name: wordpress
+    restart: always
+    networks:
+      - Awesome_network
+    volumes:
+      - wordpress-vol:/var/www/html/wordpress
+    env_file: ./.env
+
+  adminer:
+    depends_on:
+      - mariadb
+    build: requirements/bonus/adminer
+    image: adminer:inception
+    container_name: adminer
+    restart: always
+    networks:
+      - Awesome_network
+    volumes:
+      - wordpress-vol:/var/www/html/wordpress
+
+  cadvisor:
+    build: requirements/bonus/cadvisor
+    image: cadvisor:inception
+    container_name: cadvisor
+    restart: always
+    networks:
+      - Awesome_network
+    ports: 
+      - "8080:8080"
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+      - /cgroup:/cgroup:ro
+    privileged: true
+
+networks:
+  Awesome_network:
+volumes:
+  database:
+    driver_opts:
+      type: none
+      o:  bind
+      device: "/home/ghanquer/data/db"
+  wordpress-vol:
+    driver_opts:
+      type: none
+      o:  bind
+      device: "/home/ghanquer/data/wp"

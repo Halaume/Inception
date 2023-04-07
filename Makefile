@@ -1,8 +1,11 @@
 all:
-	(cd srcs/ ; sudo docker-compose up --build)
+	(cd srcs/ ; sudo docker-compose -f docker-compose.yml up --build)
 
 clean:
 	(cd srcs/ ; sudo docker-compose down)
+
+bonus:
+	(cd srcs/ ; sudo docker-compose -f docker-compose_bonus.yml up --build)
 
 clean_data:
 	sudo rm -fr /home/ghanquer/data/db/* /home/ghanquer/data/wp/*

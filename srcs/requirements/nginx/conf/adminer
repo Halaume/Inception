@@ -4,8 +4,8 @@ server
 	listen [::]:443 ssl;
 	server_name adminer.42.fr;
 	ssl on;
-	ssl_certificate /etc/ssl/certs/cert.pem;
-	ssl_certificate_key /etc/ssl/private/key.pem;
+	ssl_certificate /etc/ssl/certs/adminer/cert.pem;
+	ssl_certificate_key /etc/ssl/private/adminerkey.pem;
 	ssl_protocols TLSv1.2 TLSv1.3;
 	root /var/www/html/wordpress/adminer;
 
