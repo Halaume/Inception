@@ -41,6 +41,8 @@ services:
     volumes:
       - wordpress-vol:/var/www/html/wordpress
     env_file: ./.env
+    environment:
+      - BONUS=1
 
   adminer:
     depends_on:
@@ -71,6 +73,14 @@ services:
       - /dev/disk/:/dev/disk:ro
       - /cgroup:/cgroup:ro
     privileged: true
+
+  redis:
+    build: requirements/bonus/redis
+    image: redis:inception
+    container_name: redis
+    restart: always
+    networks:
+      - Awesome_network
 
 networks:
   Awesome_network:

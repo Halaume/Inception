@@ -13,9 +13,6 @@ test -d /var/www/html/wordpress/wordpress || mkdir -p /var/www/html/wordpress/wo
 
 if [ ! -f /var/www/html/wordpress/wordpress/wp-config.php ]
 then
-
-	echo "ALLO"
-
 	cd /var/www/html/wordpress/wordpress; \
 		wp core download --allow-root; \
 		wp config create --dbhost=mariadb --dbname=${MARIADB_DATABASE} --dbuser=${MARIADB_USER} --dbpass=${MARIADB_PASSWORD} --allow-root; chmod 0755 wp-config.php; \
@@ -26,6 +23,15 @@ fi
 chown -R www-data:www-data /var/www/html/wordpress/wordpress
 chown -R www-data:www-data /var/www/html/wordpress
 
-#exec sleep infinity
+if [ ${BONUS} ]
+then
+	cd /var/www/html/wordpress/wordpress;\
+	sed -i s/"<?php"/"<?php\ndefine('WP_REDIS_HOST','redis');\ndefine( 'WP_REDIS_PASSWORD', '$REDIS_PW' );"/g /inception/WordPress/wp-config.php ;\
+	wp plugin install redis-cache --activate --allow-root \
+	wp redis enable --allow-root
+else
+	cd /var/www/html/wordpress/wordpress; wp plugin deactivate redis-cache --uninstall --allow-root
+fi
+
 echo "Wordpress Done"
 exec /usr/sbin/php-fpm7.4 -F

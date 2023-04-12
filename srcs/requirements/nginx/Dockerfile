@@ -7,7 +7,6 @@ COPY conf/conf /etc/nginx/sites-available/default
 COPY conf/adminer /etc/nginx/sites-available/adminer
 COPY conf/conf_bonus.sh ./conf_bonus.sh
 
-RUN chmod 0755 /etc/nginx/sites-available/default conf_bonus.sh; \
-./conf_bonus.sh
+RUN chmod 0755 /etc/nginx/sites-available/default conf_bonus.sh;
 
-CMD	["/usr/sbin/nginx", "-g", "daemon off;"]
+ENTRYPOINT	[ "./conf_bonus.sh" ]
