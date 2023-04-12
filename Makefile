@@ -1,10 +1,10 @@
-all:
+all: clean
 	(cd srcs/ ; sudo docker-compose -f docker-compose.yml up --build)
 
 clean:
-	(cd srcs/ ; sudo docker-compose down)
+	(cd srcs/ ; sudo docker-compose down --remove-orphans)
 
-bonus:
+bonus: clean
 	(cd srcs/ ; sudo docker-compose -f docker-compose_bonus.yml up --build)
 
 clean_data:
