@@ -8,7 +8,7 @@ bonus: clean
 	(cd srcs/ ; sudo docker-compose -f docker-compose_bonus.yml up --build)
 
 clean_data:
-	sudo rm -fr /home/ghanquer/data/db/* /home/ghanquer/data/wp/*
+	sudo rm -fr /home/ghanquer/data/db/* /home/ghanquer/data/wp/* /home/ghanquer/data/redis/*
 
 fclean: clean
 	sudo sh ./.fclean.sh
