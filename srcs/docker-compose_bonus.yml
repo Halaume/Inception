@@ -32,6 +32,7 @@ services:
   wordpress:
     depends_on:
       - mariadb
+      - redis
     build: requirements/wordpress
     image: wordpress:inception
     container_name: wordpress
@@ -59,6 +60,12 @@ services:
   cadvisor:
     build: requirements/bonus/cadvisor
     image: cadvisor:inception
+    depends_on:
+      - adminer
+      - wordpress
+      - nginx
+      - mariadb
+      - redis
     container_name: cadvisor
     restart: always
     networks:
@@ -81,6 +88,11 @@ services:
     restart: always
     networks:
       - Awesome_network
+    sysctls:
+      - net.core.somaxconn=512
+    env_file: ./.env
+    volumes:
+      - redis-volume:/var/lib/redis
 
 networks:
   Awesome_network:
@@ -95,3 +107,8 @@ volumes:
       type: none
       o:  bind
       device: "/home/ghanquer/data/wp"
+  redis-volume:
+    driver_opts:
+      type: none
+      o: bind
+      device: "/home/ghanquer/data/redis"
