@@ -18,12 +18,12 @@ then
 		wp config create --dbhost=mariadb --dbname=${MARIADB_DATABASE} --dbuser=${MARIADB_USER} --dbpass=${MARIADB_PASSWORD} --allow-root; chmod 0755 wp-config.php; \
 		wp core install --url=ghanquer.42.fr --title="${MARIADB_DATABASE}" --admin_user=${MARIADB_USER} --admin_password=${MARIADB_PASSWORD} --admin_email="${MARIADB_ROOT_MAIL}"  --skip-email --allow-root
 		wp user create ${WORDPRESS_DB_USER} ${WORDPRESS_DB_USER}@mail.com --user_pass=${WORDPRESS_DB_PASSWORD} --role=editor --allow-root &> /dev/null; \
-		sed -i "s/<?php/<?php\ndefine( 'WP_REDIS_CLIENT', 'phpredis' );\ndefine( 'WP_REDIS_HOST', 'redis' );\ndefine( 'WP_REDIS_PORT', 6379 );\ndefine( 'WP_REDIS_PASSWORD', '${REDIS_PW}' );\ndefine( 'WP_REDIS_DATABASE', 0 );\n/" "wp-config.php";
 fi
 
 if [ ${BONUS} ]
 then
 	cd /var/www/html/wordpress/wordpress;\
+	sed -i "s/<?php/<?php\ndefine( 'WP_REDIS_CLIENT', 'phpredis' );\ndefine( 'WP_REDIS_HOST', 'redis' );\ndefine( 'WP_REDIS_PORT', 6379 );\ndefine( 'WP_REDIS_PASSWORD', '${REDIS_PW}' );\ndefine( 'WP_REDIS_DATABASE', 0 );\n/" "wp-config.php"; \
 	wp plugin install redis-cache --activate --allow-root; \
 	wp redis enable --allow-root
 else
